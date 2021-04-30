@@ -1,3 +1,4 @@
+package Controller;
 
 import com.microsoft.alm.oauth2.useragent.AuthorizationException;
 import com.microsoft.alm.oauth2.useragent.AuthorizationResponse;
@@ -43,8 +44,7 @@ public class LoginViewController implements Initializable
 
     /**
      * Loads our config info from the app.properties file
-     *
-     * @throws IOException
+     * @throws IOException IOException
      */
     public void loadProperties() throws IOException
     {
@@ -59,13 +59,12 @@ public class LoginViewController implements Initializable
         grantType = appProps.getProperty("grantType");
     }
 
-
     /**
      * Build the authorization request URL
      *
-     * @return
-     * @throws URISyntaxException
-     * @throws MalformedURLException
+     * @return the authorization URL.
+     * @throws URISyntaxException URISyntaxException
+     * @throws MalformedURLException MalformedURLException
      */
     public URI getAuthorizationEndpointUri() throws URISyntaxException, MalformedURLException
     {
@@ -83,20 +82,20 @@ public class LoginViewController implements Initializable
         URL url = builder.build().toURL();
 
         return url.toURI();
-    }
-
+    }// end of getAuthorizationEndpointUri().
 
     /**
      * Requests an authorization code from the auth server
-     *
-     * @return
-     * @throws MalformedURLException
-     * @throws URISyntaxException
-     * @throws AuthorizationException
+     * @return the authorization code.
+     * @throws MalformedURLException MalformedURLException
+     * @throws URISyntaxException URISyntaxException
+     * @throws AuthorizationException AuthorizationException
      */
     public String requestAuthCode() throws IOException, URISyntaxException, AuthorizationException
     {
+        // load properties from app.properties.
         loadProperties();
+
         // Generate the auth endpoint URI to request the auth code
         URI authorizationEndpoint = getAuthorizationEndpointUri();
 
@@ -117,16 +116,14 @@ public class LoginViewController implements Initializable
         System.out.println(code);
 
         return code;
-    }
-
+    }// end of requestAuthCode().
 
     /**
      * Given an authorization code, calls the auth server to request a token
-     *
-     * @param code
-     * @return
-     * @throws URISyntaxException
-     * @throws IOException
+     * @param code authorization code.
+     * @return the accessToken.
+     * @throws URISyntaxException URISyntaxException
+     * @throws IOException IOException
      */
     public String getTokenForCode(String code) throws URISyntaxException, IOException
     {
@@ -163,15 +160,19 @@ public class LoginViewController implements Initializable
         System.out.println("Result : " + content.toString());
 
         return content.toString();
-    }
+    }// end of getTokenForCode().
 
-
+    /**
+     * FXML button to open oauth login window.
+     * @throws AuthorizationException AuthorizationException
+     * @throws IOException IOException
+     * @throws URISyntaxException URISyntaxException
+     */
     @FXML
     void login() throws AuthorizationException, IOException, URISyntaxException
     {
         requestAuthCode();
     }// end of login().
-
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)

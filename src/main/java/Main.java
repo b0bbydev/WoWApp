@@ -17,9 +17,9 @@ public class Main extends Application
     @Override
     public void start(Stage stage) throws IOException
     {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("LoginView.fxml")));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("View/LoginView.fxml")));
         Scene scene = new Scene(root);
-        //root.getStylesheets().add(Objects.requireNonNull(getClass().getResource("Assets/main.css")).toExternalForm());
+        root.getStylesheets().add(Objects.requireNonNull(getClass().getResource("Assets/main.css")).toExternalForm());
         stage.setScene(scene);
         stage.setTitle("World of Warcraft Application");
         stage.show();
