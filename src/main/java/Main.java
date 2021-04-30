@@ -1,3 +1,9 @@
+/*
+ * Name: Bobby Jonkman
+ * Date: April.29.2021
+ * Purpose: World of Warcraft account viewer.
+ */
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

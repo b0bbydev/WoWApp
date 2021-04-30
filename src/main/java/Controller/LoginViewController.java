@@ -1,9 +1,20 @@
+/*
+ * Name: Bobby Jonkman
+ * Date: April.29.2021
+ * Purpose: Controller for LoginView.fxml
+ */
+
 package Controller;
 
+import Model.SceneChanger;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.microsoft.alm.oauth2.useragent.AuthorizationException;
 import com.microsoft.alm.oauth2.useragent.AuthorizationResponse;
 import com.microsoft.alm.oauth2.useragent.UserAgent;
 import com.microsoft.alm.oauth2.useragent.UserAgentImpl;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -34,19 +45,21 @@ public class LoginViewController implements Initializable
     @FXML
     private Button loginButton;
 
-    // These are pulled from gradle.properties
+    // These are pulled from gradle.properties.
     String blizzardDomain;
     String clientId;
     String clientSecret;
     String redirectUri;
     String scope;
     String grantType;
+    boolean loggedIn = false;
+
 
     /**
      * Loads our config info from the app.properties file
      * @throws IOException IOException
      */
-    public void loadProperties() throws IOException
+    private void loadAppProperties() throws IOException
     {
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream("app.properties");
         Properties appProps = new Properties();
@@ -57,7 +70,8 @@ public class LoginViewController implements Initializable
         redirectUri = appProps.getProperty("redirectUri");
         scope = appProps.getProperty("scope");
         grantType = appProps.getProperty("grantType");
-    }
+    }// end of loadAppProperties().
+
 
     /**
      * Build the authorization request URL
@@ -66,7 +80,7 @@ public class LoginViewController implements Initializable
      * @throws URISyntaxException URISyntaxException
      * @throws MalformedURLException MalformedURLException
      */
-    public URI getAuthorizationEndpointUri() throws URISyntaxException, MalformedURLException
+    private URI buildAuthorizationUrl() throws URISyntaxException, MalformedURLException
     {
         URIBuilder builder = new URIBuilder();
 
@@ -82,65 +96,70 @@ public class LoginViewController implements Initializable
         URL url = builder.build().toURL();
 
         return url.toURI();
-    }// end of getAuthorizationEndpointUri().
+    }// end of buildAuthorizationUrl().
+
 
     /**
      * Requests an authorization code from the auth server
      * @return the authorization code.
      * @throws MalformedURLException MalformedURLException
      * @throws URISyntaxException URISyntaxException
-     * @throws AuthorizationException AuthorizationException
      */
-    public String requestAuthCode() throws IOException, URISyntaxException, AuthorizationException
+    private String getAuthorizationCode() throws IOException, URISyntaxException
     {
         // load properties from app.properties.
-        loadProperties();
+        loadAppProperties();
 
-        // Generate the auth endpoint URI to request the auth code
-        URI authorizationEndpoint = getAuthorizationEndpointUri();
-
-        System.out.print("Authorization Endpoint URI: ");
-        System.out.println(authorizationEndpoint.toString());
+        // Generate the auth endpoint URI to request the authCode.
+        URI authorizationEndpoint = buildAuthorizationUrl();
 
         final URI redirectUri = new URI(this.redirectUri);
 
-        // Create the user agent and make the call to the auth endpoint
+        AuthorizationResponse authorizationResponse = null;
+
+        // Create the user agent and make the call to the auth endpoint.
         final UserAgent userAgent = new UserAgentImpl();
 
-        final AuthorizationResponse authorizationResponse = userAgent.requestAuthorizationCode(authorizationEndpoint, redirectUri);
+        try {
+            authorizationResponse = userAgent.requestAuthorizationCode(authorizationEndpoint, redirectUri);
+        } catch (Exception e)
+        {
+            System.out.println("Authorization Response most likely null.");
+            if(authorizationResponse == null)
+            {
+                return null;
+            } else {
+                return authorizationResponse.getCode();
+            }
+        }// end of try-catch.
 
-        // We should have the code, which we can trade for the token
-        final String code = authorizationResponse.getCode();
-
-        System.out.print("Authorization Code: ");
-        System.out.println(code);
-
-        return code;
+        return authorizationResponse.getCode();
     }// end of requestAuthCode().
+
 
     /**
      * Given an authorization code, calls the auth server to request a token
-     * @param code authorization code.
+     * @param authCode authorization code.
      * @return the accessToken.
      * @throws URISyntaxException URISyntaxException
      * @throws IOException IOException
      */
-    public String getTokenForCode(String code) throws URISyntaxException, IOException
+    private String getAccessToken(String authCode) throws URISyntaxException, IOException
     {
-        // The token request URL
-        final String tokenUrl = "https://" + blizzardDomain + "/oauth2/default/v1/token";
+        // The token request URL.
+        final String tokenUrl = "https://" + blizzardDomain + "/oauth/token";
 
-        // The original redirect URL
+        // The original redirect URL.
         final URI redirectUri = new URI(this.redirectUri);
 
-        // Using HttpClient to make the POST to exchange the auth code for the token
+        // Using HttpClient to make the POST to exchange the auth code for the token.
         HttpClient client = HttpClientBuilder.create().build();
         HttpPost post = new HttpPost(tokenUrl);
 
-        // Adding the POST params to the request
+        // Adding the POST params to the request.
         List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
         urlParameters.add(new BasicNameValuePair("grant_type", grantType));
-        urlParameters.add(new BasicNameValuePair("code", code));
+        urlParameters.add(new BasicNameValuePair("code", authCode));
         urlParameters.add(new BasicNameValuePair("redirect_uri", redirectUri.toString()));
         urlParameters.add(new BasicNameValuePair("client_id", clientId));
         urlParameters.add(new BasicNameValuePair("client_secret", clientSecret));
@@ -148,35 +167,53 @@ public class LoginViewController implements Initializable
 
         post.setEntity(new UrlEncodedFormEntity(urlParameters));
 
-        // Execute the request
+        // Execute the request.
         HttpResponse response = client.execute(post);
 
-        // Print the status code
-        System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-
-        // Get the content as a String
+        // Get the content as a String.
         String content = EntityUtils.toString(response.getEntity());
 
-        System.out.println("Result : " + content.toString());
+        // parse the json String.
+        JsonParser parser = new JsonParser();
+        JsonElement element = parser.parse(content);
+        JsonObject jsonObject = element.getAsJsonObject();
 
-        return content.toString();
+        // try to assign accessToken variable for null check.
+        String accessToken = null;
+        try {
+            accessToken = jsonObject.get("access_token").getAsString();
+        } catch(Exception e)
+        {
+            System.out.println("AccessToken most likely null.");
+        }// end of try-catch.
+
+        if(accessToken == null)
+        {
+            loggedIn = false;
+        } else {
+            loggedIn = true;
+        }// end of if-else.
+
+        return accessToken;
     }// end of getTokenForCode().
 
-    /**
-     * FXML button to open oauth login window.
-     * @throws AuthorizationException AuthorizationException
-     * @throws IOException IOException
-     * @throws URISyntaxException URISyntaxException
-     */
+
     @FXML
-    void login() throws AuthorizationException, IOException, URISyntaxException
+    void accessToken(ActionEvent event) throws AuthorizationException, IOException, URISyntaxException
     {
-        requestAuthCode();
-    }// end of login().
+        // call getAccessToken method when the button is clicked.
+        getAccessToken(getAuthorizationCode());
+
+        // check if user is logged in before switching to next scene.
+        if(loggedIn)
+        {
+            SceneChanger.changeScene(event, "../View/Homeview.fxml", "HomeView");
+        }// end of if.
+    }// end of accessToken().
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
-
     }// end of initialize().
 }// end of class.
