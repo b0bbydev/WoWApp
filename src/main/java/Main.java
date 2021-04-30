@@ -23,7 +23,8 @@ public class Main extends Application
     @Override
     public void start(Stage stage) throws IOException
     {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("View/LoginView.fxml")));
+        //Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("View/LoginView.fxml")));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("View/HomeView.fxml")));
         Scene scene = new Scene(root);
         root.getStylesheets().add(Objects.requireNonNull(getClass().getResource("Assets/main.css")).toExternalForm());
         stage.setScene(scene);

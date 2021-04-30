@@ -4,6 +4,10 @@ This application was made as a hobby project and is an extension from a college 
 
 **Prerequisites:** [Java 8](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html/).
 
+```bash
+git clone https://github.com/b0bbydev/WoWApp.git
+```
+
 ## Links
 
 This example uses the following open source libraries:

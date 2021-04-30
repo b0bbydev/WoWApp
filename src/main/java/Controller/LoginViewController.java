@@ -18,6 +18,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.stage.Stage;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -57,6 +58,7 @@ public class LoginViewController implements Initializable
 
     /**
      * Loads our config info from the app.properties file
+     *
      * @throws IOException IOException
      */
     private void loadAppProperties() throws IOException
@@ -77,7 +79,7 @@ public class LoginViewController implements Initializable
      * Build the authorization request URL
      *
      * @return the authorization URL.
-     * @throws URISyntaxException URISyntaxException
+     * @throws URISyntaxException    URISyntaxException
      * @throws MalformedURLException MalformedURLException
      */
     private URI buildAuthorizationUrl() throws URISyntaxException, MalformedURLException
@@ -101,11 +103,12 @@ public class LoginViewController implements Initializable
 
     /**
      * Requests an authorization code from the auth server
+     *
      * @return the authorization code.
      * @throws MalformedURLException MalformedURLException
-     * @throws URISyntaxException URISyntaxException
+     * @throws URISyntaxException    URISyntaxException
      */
-    private String getAuthorizationCode() throws IOException, URISyntaxException
+    private String getAuthorizationCode() throws IOException, URISyntaxException, AuthorizationException
     {
         // load properties from app.properties.
         loadAppProperties();
@@ -115,23 +118,16 @@ public class LoginViewController implements Initializable
 
         final URI redirectUri = new URI(this.redirectUri);
 
-        AuthorizationResponse authorizationResponse = null;
-
         // Create the user agent and make the call to the auth endpoint.
         final UserAgent userAgent = new UserAgentImpl();
 
-        try {
-            authorizationResponse = userAgent.requestAuthorizationCode(authorizationEndpoint, redirectUri);
-        } catch (Exception e)
-        {
-            System.out.println("Authorization Response most likely null.");
-            if(authorizationResponse == null)
-            {
-                return null;
-            } else {
-                return authorizationResponse.getCode();
-            }
-        }// end of try-catch.
+        // hide the loginView scene when the userAgent is opened.
+        // get the current stage.
+        Stage stage = (Stage) loginButton.getScene().getWindow();
+        // close it.
+        stage.close();
+
+        AuthorizationResponse authorizationResponse = userAgent.requestAuthorizationCode(authorizationEndpoint, redirectUri);
 
         return authorizationResponse.getCode();
     }// end of requestAuthCode().
@@ -139,10 +135,11 @@ public class LoginViewController implements Initializable
 
     /**
      * Given an authorization code, calls the auth server to request a token
+     *
      * @param authCode authorization code.
      * @return the accessToken.
      * @throws URISyntaxException URISyntaxException
-     * @throws IOException IOException
+     * @throws IOException        IOException
      */
     private String getAccessToken(String authCode) throws URISyntaxException, IOException
     {
@@ -178,36 +175,34 @@ public class LoginViewController implements Initializable
         JsonElement element = parser.parse(content);
         JsonObject jsonObject = element.getAsJsonObject();
 
-        // try to assign accessToken variable for null check.
-        String accessToken = null;
-        try {
-            accessToken = jsonObject.get("access_token").getAsString();
-        } catch(Exception e)
-        {
-            System.out.println("AccessToken most likely null.");
-        }// end of try-catch.
+        String accessToken = jsonObject.get("access_token").getAsString();
 
-        if(accessToken == null)
-        {
-            loggedIn = false;
-        } else {
-            loggedIn = true;
-        }// end of if-else.
+        loggedIn = accessToken != null; // if accessToken is null, loggedIn == false, else loggedIn == true.
 
         return accessToken;
     }// end of getTokenForCode().
 
 
+    /**
+     * This method will start the OAuth2 flow when the button is clicked.
+     *
+     * @param event login button being pressed.
+     * @throws IOException IOException.
+     */
     @FXML
-    void accessToken(ActionEvent event) throws AuthorizationException, IOException, URISyntaxException
+    void login(ActionEvent event) throws IOException
     {
-        // call getAccessToken method when the button is clicked.
-        getAccessToken(getAuthorizationCode());
+        // if the user closes the userAgent before finishing flow, catch the Exception redirect them back to the loginView.
+        try {
+            getAccessToken(getAuthorizationCode());
+        } catch (Exception e) {
+            // when the exception is thrown, redirect back to loginView.
+            SceneChanger.changeScene(event, "../View/LoginView.fxml", "LoginView");
+        }// end of try-catch.
 
         // check if user is logged in before switching to next scene.
-        if(loggedIn)
-        {
-            SceneChanger.changeScene(event, "../View/Homeview.fxml", "HomeView");
+        if (loggedIn) {
+            SceneChanger.changeScene(event, "../View/HomeView.fxml", "HomeView");
         }// end of if.
     }// end of accessToken().
 
