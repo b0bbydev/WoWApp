@@ -25,4 +25,47 @@ public class Characters
     private Faction characterFaction;
     @SerializedName("level")
     private int characterLevel;
+
+
+    /* Getters */
+    public String getCharacterName()
+    {
+        return characterName;
+    }
+
+    public Realm getCharacterRealm()
+    {
+        return characterRealm;
+    }
+
+    public PlayableClass getCharacterClass()
+    {
+        return characterClass;
+    }
+
+    public PlayableRace getCharacterRace()
+    {
+        return characterRace;
+    }
+
+    public Gender getCharacterGender()
+    {
+        return characterGender;
+    }
+
+    public Faction getCharacterFaction()
+    {
+        return characterFaction;
+    }
+
+    public int getCharacterLevel()
+    {
+        return characterLevel;
+    }
+
+
+    public String toString()
+    {
+        return String.format("%s", characterName);
+    }// end of toString().
 }// end of class.

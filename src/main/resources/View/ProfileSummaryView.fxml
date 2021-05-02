@@ -11,7 +11,7 @@
 
 <!-- (This fixes a warning intellij was giving) xmlns="http://javafx.com/javafx/16" -> xmlns="http://javafx.com/javafx/8.0.141" -->
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ProfileSummaryViewController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ProfileSummaryViewController">
    <children>
       <MenuBar prefHeight="0.0" prefWidth="600.0">
         <menus>
