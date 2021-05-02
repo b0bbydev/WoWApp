@@ -4,7 +4,7 @@
  * Purpose: This class will be the parent class for parsing the ProfileSummaryRequest.
  */
 
-package Utilities.APIResponse;
+package Utilities.APIResponse.ProfileSummary;
 
 import Model.ProfileSummary.WowAccounts;
 import com.google.gson.annotations.SerializedName;
@@ -16,14 +16,9 @@ public class ProfileSummaryResponse
     private WowAccounts[] wowAccounts;
 
 
-    /* Getters & Setters */
+    /* Getters */
     public WowAccounts[] getWowAccounts()
     {
         return wowAccounts;
-    }
-
-    public void setWowAccounts(WowAccounts[] wowAccounts)
-    {
-        this.wowAccounts = wowAccounts;
     }
 }// end of class.

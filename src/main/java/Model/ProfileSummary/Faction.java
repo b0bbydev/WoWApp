@@ -20,4 +20,10 @@ public class Faction
     {
         return faction;
     }
+
+
+    public String toString()
+    {
+        return String.format("%s", faction);
+    }// end of toString().
 }// end of class.

@@ -19,4 +19,10 @@ public class Realm
     {
         return realm;
     }
+
+
+    public String toString()
+    {
+        return String.format("%s", realm);
+    }// end of toString().
 }// end of class.

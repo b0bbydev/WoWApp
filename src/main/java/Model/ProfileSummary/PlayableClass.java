@@ -20,4 +20,10 @@ public class PlayableClass
     {
         return playableClass;
     }
+
+
+    public String toString()
+    {
+        return String.format("%s", playableClass);
+    }// end of toString().
 }// end of class.

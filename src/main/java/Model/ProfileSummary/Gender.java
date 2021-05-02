@@ -20,4 +20,10 @@ public class Gender
     {
         return gender;
     }
+
+
+    public String toString()
+    {
+        return String.format("%s", gender);
+    }// end of toString().
 }// end of class.

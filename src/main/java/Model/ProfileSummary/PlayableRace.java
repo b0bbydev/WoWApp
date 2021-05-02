@@ -20,4 +20,10 @@ public class PlayableRace
     {
         return playableRace;
     }
+
+
+    public String toString()
+    {
+        return String.format("%s", playableRace);
+    }// end of toString().
 }// end of class.
