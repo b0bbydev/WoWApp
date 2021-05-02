@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<!-- (This fixes a warning intellij was giving) xmlns="http://javafx.com/javafx/16" -> xmlns="http://javafx.com/javafx/8.0.141" -->
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ProfileSummaryViewController">
+   <children>
+      <MenuBar prefHeight="0.0" prefWidth="600.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Close" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+      <VBox alignment="CENTER" layoutX="-1.0" prefHeight="400.0" prefWidth="600.0">
+         <children>
+            <HBox prefHeight="206.0" prefWidth="600.0">
+               <children>
+                  <ListView fx:id="characterListView" prefHeight="206.0" prefWidth="207.0" />
+               </children>
+               <VBox.margin>
+                  <Insets left="10.0" />
+               </VBox.margin>
+            </HBox>
+         </children></VBox>
+   </children>
+</AnchorPane>
