@@ -14,20 +14,27 @@ import java.io.IOException;
 public class Request
 {
     // instance variables.
+    private static String content;
 
 
     // create a method to make a request to an endpoint.
-    public static JsonObject makeGetRequest(String endpoint) throws IOException
+    public static JsonObject makeGetRequest(String endpoint)
     {
         // Using HttpClient to make the POST to exchange the auth code for the token.
         HttpClient client = HttpClientBuilder.create().build();
         HttpGet get = new HttpGet(endpoint);
 
-        // Execute the request.
-        HttpResponse response = client.execute(get);
+        try
+        {
+            // Execute the request.
+            HttpResponse response = client.execute(get);
 
-        // Get the content as a String.
-        String content = EntityUtils.toString(response.getEntity());
+            // Get the content as a String.
+            content = EntityUtils.toString(response.getEntity());
+        } catch(IOException e)
+        {
+            System.out.println("Request Error.");
+        }// end of try-catch.
 
         // parse the json String.
         JsonParser parser = new JsonParser();

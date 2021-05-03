@@ -9,16 +9,11 @@ package Utilities.APIRequest.ProfileSummary;
 import Utilities.APIRequest.Request;
 import com.google.gson.JsonObject;
 
-import java.io.IOException;
-
 public class ProfileSummaryRequest
 {
-    // instance variables.
-
-
     // create a method to make the request to endpoint.
-    public static JsonObject profileSummaryGet() throws IOException
+    public static JsonObject profileSummaryGet()
     {
-        return Request.makeGetRequest("https://us.api.blizzard.com/profile/user/wow?namespace=profile-us&locale=en_US&access_token=USFqO3YcZhqrlA22ZHqwjAiFVFtERhrllq");
+        return Request.makeGetRequest("https://us.api.blizzard.com/profile/user/wow?namespace=profile-us&locale=en_US&access_token=USMLRCSv4aZuqV8Net5svGDTYcltoZAJS0");
     }// end of profileSummaryGet().
 }// end of class.

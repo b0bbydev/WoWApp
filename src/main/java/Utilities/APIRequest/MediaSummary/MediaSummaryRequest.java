@@ -9,16 +9,11 @@ package Utilities.APIRequest.MediaSummary;
 import Utilities.APIRequest.Request;
 import com.google.gson.JsonObject;
 
-import java.io.IOException;
-
 public class MediaSummaryRequest
 {
-    // instance variables.
-
-
     // create a method to make the request to endpoint.
-    public static JsonObject mediaSummaryGet() throws IOException
+    public static JsonObject mediaSummaryGet(String characterName)
     {
-        return Request.makeGetRequest("https://us.api.blizzard.com/profile/wow/character/zuljin/bobdapally/character-media?namespace=profile-us&locale=en_US&access_token=USiEPT1rILM2Ubg7bZVEFMFX1SdFxg5S4s");
+        return Request.makeGetRequest("https://us.api.blizzard.com/profile/wow/character/zuljin/" + characterName + "/character-media?namespace=profile-us&locale=en_US&access_token=USMLRCSv4aZuqV8Net5svGDTYcltoZAJS0");
     }// end of mediaSummaryGet().
 }// end of class.

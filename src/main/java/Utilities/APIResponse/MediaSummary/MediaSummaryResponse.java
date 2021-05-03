@@ -12,11 +12,16 @@ public class MediaSummaryResponse
 {
     // instance variables.
     private Assets[] assets;
-
+    private int code;
 
     /* Getters */
     public Assets[] getAssets()
     {
         return assets;
+    }
+
+    public int getCode()
+    {
+        return code;
     }
 }// end of class.
