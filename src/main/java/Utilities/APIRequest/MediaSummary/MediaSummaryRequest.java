@@ -7,13 +7,19 @@
 package Utilities.APIRequest.MediaSummary;
 
 import Utilities.APIRequest.Request;
+import Utilities.Config;
+import Utilities.DBUtility;
 import com.google.gson.JsonObject;
+import com.microsoft.alm.oauth2.useragent.AuthorizationException;
 
-public class MediaSummaryRequest
+import java.io.IOException;
+import java.net.URISyntaxException;
+
+public class MediaSummaryRequest extends Config
 {
     // create a method to make the request to endpoint.
     public static JsonObject mediaSummaryGet(String characterName)
     {
-        return Request.makeGetRequest("https://us.api.blizzard.com/profile/wow/character/zuljin/" + characterName + "/character-media?namespace=profile-us&locale=en_US&access_token=USMLRCSv4aZuqV8Net5svGDTYcltoZAJS0");
+        return Request.makeGetRequest("https://us.api.blizzard.com/profile/wow/character/zuljin/" + characterName + "/character-media?namespace=profile-us&locale=en_US&access_token=" + DBUtility.getAccessToken());
     }// end of mediaSummaryGet().
 }// end of class.
