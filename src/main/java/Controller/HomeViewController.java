@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import static Controller.LoginViewController.closeStage;
+import static Model.SceneChanger.closeStage;
 
 public class HomeViewController implements Initializable {
     // instance variables.
@@ -46,6 +46,7 @@ public class HomeViewController implements Initializable {
      */
     @FXML
     void changeToProfileSummary(ActionEvent event) throws IOException {
+        //SceneChanger.changeScene(event, "../View/ProfileSummaryView.fxml", "ProfileSummaryView");
         SceneChanger.changeScene(event, "../View/ProfileSummaryView.fxml", "ProfileSummaryView");
     }// end of profileSummary().
 

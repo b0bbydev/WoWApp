@@ -7,6 +7,7 @@
 package Controller;
 
 import Model.ProfileSummary.Characters;
+import Model.SceneChanger;
 import Utilities.APIResponse.MediaSummary.MediaSummaryResponse;
 import Utilities.APIResponse.ProfileSummary.ProfileSummaryResponse;
 import com.google.gson.Gson;
@@ -19,6 +20,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -49,6 +51,8 @@ public class ProfileSummaryViewController implements Initializable {
     private Menu fileMenu;
     @FXML
     private MenuItem closeMenuItem;
+    @FXML
+    private MenuItem backMenuItem;
 
     /**
      * This method will populate the characterListView in the Scene.
@@ -62,6 +66,7 @@ public class ProfileSummaryViewController implements Initializable {
 
     /**
      * This method will get the character image from the parsed response.
+     *
      * @param character The desired character to get the image of.
      * @return the character image - is a url link in String format.
      */
@@ -94,6 +99,18 @@ public class ProfileSummaryViewController implements Initializable {
      */
     EventHandler<ActionEvent> closeEvent = event -> closeStage();
 
+    /**
+     * This event is used in the menuItem, and will change the Stage back to HomeView.fxml.
+     */
+    EventHandler<ActionEvent> backEvent = event -> {
+        // changeScene could throw an exception, so surround in try-catch.
+        try {
+            SceneChanger.changeToHomeView(classTextField);
+        } catch(IOException e) {
+            e.printStackTrace();
+        }// end of try-catch.
+    };
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // config of scene.
@@ -103,8 +120,11 @@ public class ProfileSummaryViewController implements Initializable {
         raceTextField.setEditable(false);
         genderTextField.setEditable(false);
         realmTextField.setEditable(false);
-        closeMenuItem.setOnAction(closeEvent);
 
+        closeMenuItem.setOnAction(closeEvent);
+        backMenuItem.setOnAction(backEvent);
+
+        // when populating the ListView, catch the Exceptions if there are any thrown.
         try {
             populateCharacterListView();
         } catch(Exception e) {

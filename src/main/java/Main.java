@@ -8,6 +8,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -26,6 +27,7 @@ public class Main extends Application {
         Scene scene = new Scene(root);
         root.getStylesheets().add(Objects.requireNonNull(getClass().getResource("Assets/main.css")).toExternalForm());
         stage.setScene(scene);
+        stage.getIcons().add(new Image("Assets/wowicon.png"));
         stage.setTitle("World of Warcraft Application");
         stage.show();
     }// end of start().

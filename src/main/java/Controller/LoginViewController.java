@@ -16,11 +16,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import static Model.SceneChanger.closeStage;
 
 public class LoginViewController extends Config implements Initializable {
     // instance variables.
@@ -32,17 +33,6 @@ public class LoginViewController extends Config implements Initializable {
     private Menu fileMenu;
     @FXML
     private MenuItem closeMenuItem;
-
-    /**
-     * This method will close the current Stage.
-     * @param button the current stage can be found from an element on the Stage - In this case a button.
-     */
-    public static void closeStage(Button button) {
-        // get the current stage.
-        Stage stage = (Stage) button.getScene().getWindow();
-        // close it.
-        stage.close();
-    }// end of closeStage().
 
     /**
      * This event is used in the menuItem, and will close the current Stage.
@@ -65,16 +55,14 @@ public class LoginViewController extends Config implements Initializable {
         try {
             requestAccessToken();
             loggedIn = true;
-        } catch(Exception e)
-        {
+        } catch(Exception e) {
             // if there is an error thrown, the login process should fail and be reset back to the initial LoginView.
             loggedIn = false;
             SceneChanger.changeScene(event, "../View/LoginView.fxml", "LoginView");
         }// end of try-catch.
 
         // if the user is logged in, change the scene to HomeView.fxml.
-        if(loggedIn)
-        {
+        if(loggedIn) {
             SceneChanger.changeScene(event, "../View/HomeView.fxml", "HomeView");
         }// end of if.
     }// end of login().
