@@ -10,14 +10,15 @@ import Utilities.APIRequest.Request;
 import Utilities.Config;
 import Utilities.DBUtility;
 import com.google.gson.JsonObject;
-import com.microsoft.alm.oauth2.useragent.AuthorizationException;
-
-import java.io.IOException;
-import java.net.URISyntaxException;
 
 public class MediaSummaryRequest extends Config
 {
-    // create a method to make the request to endpoint.
+    /**
+     * This method will make a request to the MediaSummary endpoint Blizzard provides.
+     *
+     * @param characterName The desired character to search.
+     * @return The response of the request.
+     */
     public static JsonObject mediaSummaryGet(String characterName)
     {
         return Request.makeGetRequest("https://us.api.blizzard.com/profile/wow/character/zuljin/" + characterName + "/character-media?namespace=profile-us&locale=en_US&access_token=" + DBUtility.getAccessToken());

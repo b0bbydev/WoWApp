@@ -9,16 +9,13 @@ package Utilities.APIResponse.ProfileSummary;
 import Model.ProfileSummary.WowAccounts;
 import com.google.gson.annotations.SerializedName;
 
-public class ProfileSummaryResponse
-{
+public class ProfileSummaryResponse {
     // instance variables.
     @SerializedName("wow_accounts")
     private WowAccounts[] wowAccounts;
 
-
     /* Getters */
-    public WowAccounts[] getWowAccounts()
-    {
+    public WowAccounts[] getWowAccounts() {
         return wowAccounts;
     }
 }// end of class.

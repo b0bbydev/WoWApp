@@ -8,20 +8,17 @@ package Utilities.APIResponse.MediaSummary;
 
 import Model.MediaSummary.Assets;
 
-public class MediaSummaryResponse
-{
+public class MediaSummaryResponse {
     // instance variables.
     private Assets[] assets;
     private int code;
 
     /* Getters */
-    public Assets[] getAssets()
-    {
+    public Assets[] getAssets() {
         return assets;
     }
 
-    public int getCode()
-    {
+    public int getCode() {
         return code;
     }
 }// end of class.

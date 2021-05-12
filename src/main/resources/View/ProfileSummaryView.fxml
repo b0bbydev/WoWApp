@@ -19,16 +19,16 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ProfileSummaryViewController">
    <children>
-      <MenuBar prefHeight="0.0" prefWidth="600.0">
+      <MenuBar fx:id="menuBar" prefHeight="25.0" prefWidth="607.0">
         <menus>
-          <Menu mnemonicParsing="false" text="File">
+          <Menu fx:id="fileMenu" mnemonicParsing="false" text="File">
             <items>
-              <MenuItem mnemonicParsing="false" text="Close" />
+              <MenuItem fx:id="closeMenuItem" mnemonicParsing="false" text="Close" />
             </items>
           </Menu>
         </menus>
       </MenuBar>
-      <VBox alignment="CENTER" layoutX="7.0" prefHeight="400.0" prefWidth="600.0">
+      <VBox alignment="CENTER" layoutY="24.0" prefHeight="376.0" prefWidth="607.0">
          <children>
             <HBox prefHeight="196.0" prefWidth="580.0">
                <children>

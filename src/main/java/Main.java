@@ -13,16 +13,13 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.Objects;
 
-public class Main extends Application
-{
-    public static void main(String[] args)
-    {
+public class Main extends Application {
+    public static void main(String[] args) {
         launch(args);
     }// end of main.
 
     @Override
-    public void start(Stage stage) throws IOException
-    {
+    public void start(Stage stage) throws IOException {
         //Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("View/LoginView.fxml")));
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("View/HomeView.fxml")));
         //Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("View/ProfileSummaryView.fxml")));

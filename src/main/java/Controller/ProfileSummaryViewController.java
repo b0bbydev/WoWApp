@@ -10,11 +10,14 @@ import Model.ProfileSummary.Characters;
 import Utilities.APIResponse.MediaSummary.MediaSummaryResponse;
 import Utilities.APIResponse.ProfileSummary.ProfileSummaryResponse;
 import com.google.gson.Gson;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -40,9 +43,16 @@ public class ProfileSummaryViewController implements Initializable {
     private TextField genderTextField;
     @FXML
     private TextField realmTextField;
+    @FXML
+    private MenuBar menuBar;
+    @FXML
+    private Menu fileMenu;
+    @FXML
+    private MenuItem closeMenuItem;
 
-
-    // create a method to populate the characterListView.
+    /**
+     * This method will populate the characterListView in the Scene.
+     */
     public void populateCharacterListView() {
         ProfileSummaryResponse response = new Gson().fromJson(profileSummaryGet(), ProfileSummaryResponse.class);
 
@@ -50,8 +60,11 @@ public class ProfileSummaryViewController implements Initializable {
         characterListView.getItems().addAll(response.getWowAccounts()[0].getCharacters());
     }// end of populateListView().
 
-
-    // create a method to get the character image from Blizzard API.
+    /**
+     * This method will get the character image from the parsed response.
+     * @param character The desired character to get the image of.
+     * @return the character image - is a url link in String format.
+     */
     public String getCharacterImage(Characters character) {
         // the response from MediaSummaryRequest.
         MediaSummaryResponse response = new Gson().fromJson(mediaSummaryGet(character.getCharacterName().toLowerCase()), MediaSummaryResponse.class);
@@ -66,6 +79,20 @@ public class ProfileSummaryViewController implements Initializable {
         }// end of if-else().
     }// end of getCharacterImage().
 
+    /**
+     * This method will close the current Stage.
+     */
+    private void closeStage() {
+        // get the current stage.
+        Stage stage = (Stage) characterListView.getScene().getWindow();
+        // close it.
+        stage.close();
+    }// end of closeStage().
+
+    /**
+     * This event is used in the menuItem, and will close the current Stage.
+     */
+    EventHandler<ActionEvent> closeEvent = event -> closeStage();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -76,11 +103,13 @@ public class ProfileSummaryViewController implements Initializable {
         raceTextField.setEditable(false);
         genderTextField.setEditable(false);
         realmTextField.setEditable(false);
+        closeMenuItem.setOnAction(closeEvent);
+
         try {
             populateCharacterListView();
         } catch(Exception e) {
             e.printStackTrace();
-        }
+        }// end of try-catch.
 
         // depending on the character that is selected, populate respective fields.
         characterListView.getSelectionModel().selectedItemProperty().addListener(
@@ -91,7 +120,7 @@ public class ProfileSummaryViewController implements Initializable {
                     raceTextField.setText(characterSelected.getCharacterRace().toString());
                     genderTextField.setText(characterSelected.getCharacterGender().toString());
                     realmTextField.setText(characterSelected.getCharacterRealm().toString());
-                    //characterImageView.setImage(new Image(getCharacterImage(characterSelected)));
+                    characterImageView.setImage(new Image(getCharacterImage(characterSelected)));
                 });
 
         // this will auto-select the first item in the list. - improves user interactivity.

@@ -10,20 +10,20 @@
 
 <!-- (This fixes a warning intellij was giving) xmlns="http://javafx.com/javafx/16" -> xmlns="http://javafx.com/javafx/8.0.141" -->
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.HomeViewController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.HomeViewController">
    <children>
-      <MenuBar prefHeight="25.0" prefWidth="600.0">
+      <MenuBar fx:id="menuBar" prefHeight="25.0" prefWidth="600.0">
         <menus>
-          <Menu mnemonicParsing="false" text="File">
+          <Menu fx:id="fileMenu" mnemonicParsing="false" text="File">
             <items>
-              <MenuItem mnemonicParsing="false" text="Close" />
+              <MenuItem fx:id="closeMenuItem" mnemonicParsing="false" text="Close" />
             </items>
           </Menu>
         </menus>
       </MenuBar>
-      <VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0">
+      <VBox alignment="CENTER" layoutY="25.0" prefHeight="375.0" prefWidth="600.0">
          <children>
-            <Button fx:id="profileSummaryButton" mnemonicParsing="false" onAction="#profileSummary" text="Profile Summary" />
+            <Button fx:id="profileSummaryButton" mnemonicParsing="false" onAction="#changeToProfileSummary" text="Profile Summary" />
             <Label text="HomeView" />
          </children>
       </VBox>

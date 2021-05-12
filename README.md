@@ -10,9 +10,12 @@ git clone https://github.com/b0bbydev/WoWApp.git
 
 ## Links
 
-This example uses the following open source libraries:
+This project uses the following open source libraries:
 
 * [Microsoft OAuth 2.0 User Agent library for Java](https://github.com/microsoft/oauth2-useragent)
+* [Microsoft JDBC Driver for SQL Server](https://github.com/microsoft/mssql-jdbc)  
+* [Google Gson - Serialization/Deserialization library to convert Java objects into JSON and back](https://github.com/google/gson)
+* [JavaFX - open source client application platform for desktop, mobile and embedded systems built on Java](https://github.com/openjdk/jfx)
 
 ## License
 

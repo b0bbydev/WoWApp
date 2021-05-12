@@ -19,7 +19,6 @@ public class SceneChanger
 {
     /**
      * Change the scene.
-     *
      * @param event    the event
      * @param viewName the view name
      * @param title    the title
